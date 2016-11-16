@@ -1,19 +1,32 @@
+import 'dart:async';
+
 import 'package:angular2/core.dart';
+import 'package:angular2/router.dart';
+import 'package:angular2/platform/common.dart';
+
 import 'hero.dart';
+import 'hero_service.dart';
 
 @Component(
     selector: 'my-hero-detail',
-    template: '''
-    <div *ngIf="hero != null">
-      <h2>{{hero.name}} details!</h2>
-      <div><label>id: </label>{{hero.id}}</div>
-      <div>
-        <label>name: </label>
-        <input [(ngModel)]="hero.name" placeholder="name">
-      </div>
-    </div>'''
+    templateUrl: 'hero_detail_component.html'
     )
-class HeroDetailComponent {
+class HeroDetailComponent implements OnInit {
+  final HeroService _heroService;
+  final RouteParams _routeParams;
+  final Location _location;
+
+  HeroDetailComponent(this._heroService, this._routeParams, this._location);
+
+  Future<Null> ngOnInit() async {
+    var idString = _routeParams.get('id');
+    var id = int.parse(idString ?? '', onError: (_) => null);
+    if (id != null) hero = await (_heroService.getHero(id));
+  }
+
+  void goBack() {
+    _location.back();
+  }
 
   @Input()
   Hero hero;
