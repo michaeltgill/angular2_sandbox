@@ -16,7 +16,13 @@ import 'hero_service.dart';
         <span class="badge">{{hero.id}}</span> {{hero.name}}
       </li>
     </ul>
-    <my-hero-detail [hero]="selectedHero"></my-hero-detail>''',
+    <div *ngIf="selectedHero != null">
+      <h2>
+        {{selectedHero.name | uppercase}} is my hero
+      </h2>
+      <button (click)="gotoDetail()">View Details</button>
+    </div>
+  ''',
   styles: const ['''
     .selected {
       background-color: #CFD8DC !important;
