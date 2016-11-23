@@ -13,6 +13,7 @@ import 'hero_service.dart';
     styleUrls: const ['hero_detail_component.css']
     )
 class HeroDetailComponent implements OnInit {
+  Hero hero;
   final HeroService _heroService;
   final RouteParams _routeParams;
   final Location _location;
@@ -29,6 +30,8 @@ class HeroDetailComponent implements OnInit {
     _location.back();
   }
 
-  @Input()
-  Hero hero;
+  Future<Null> save() async {
+    await _heroService.update(hero);
+    goBack();
+  }
 }
